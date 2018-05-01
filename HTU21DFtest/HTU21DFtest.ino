@@ -1,4 +1,14 @@
-
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiAP.h>
+#include <ESP8266WiFiGeneric.h>
+#include <ESP8266WiFiMulti.h>
+#include <ESP8266WiFiScan.h>
+#include <ESP8266WiFiSTA.h>
+#include <ESP8266WiFiType.h>
+#include <WiFiClient.h>
+#include <WiFiClientSecure.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
 
 /*************************************************** 
   This is an example for the HTU21D-F Humidity & Temp Sensor
@@ -12,6 +22,7 @@
 
 #include <Wire.h>
 #include "Adafruit_HTU21DF.h"
+
 #include <SoftwareSerial.h>
 
 
@@ -22,26 +33,25 @@
 
 Adafruit_HTU21DF htu = Adafruit_HTU21DF();
 SoftwareSerial sensorLoRa(12, 14); //TX, RX 
-
 void setup() {
+  WiFi.mode(WIFI_OFF);
 //  Serial.begin(115200);
 //  Serial.println("HTU21D-F test");
   sensorLoRa.begin(9600);
-  sensorLoRa.println("Comincio");
 
   if (!htu.begin()) {
 //    Serial.println("Couldn't find sensor!");
     while (1);
   }
+  //  Serial.print("Temp: "); Serial.print(htu.readTemperature());
+//  Serial.print("\t\tHum: "); Serial.println(htu.readHumidity());
+  sensorLoRa.print("\tT: "); sensorLoRa.print(htu.readTemperature());
+  sensorLoRa.print("\tH: "); sensorLoRa.println(htu.readHumidity());
+  ESP.deepSleep(10e6);  
+
 }
 
 
 void loop() {
-//  Serial.print("Temp: "); Serial.print(htu.readTemperature());
-//  Serial.print("\t\tHum: "); Serial.println(htu.readHumidity());
-  sensorLoRa.print("Temp: "); sensorLoRa.print(htu.readTemperature());
-  sensorLoRa.print("\t\tHum: "); sensorLoRa.println(htu.readHumidity());
-  
-  delay(500);
 }
 
